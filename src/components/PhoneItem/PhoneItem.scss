@@ -1,0 +1,176 @@
+@import "../../styles/variables.scss";
+
+.phone-item {
+  background: $white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  max-width: 300px;
+  margin: 0 auto;
+
+  &:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+  }
+
+  &__badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: $neutral-600;
+    color: $white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+  }
+
+  &__image-container {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+
+  &__image {
+    max-width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  &__image-placeholder {
+    height: 200px;
+    background: linear-gradient(135deg, $neutral-100, $neutral-200);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: $neutral-400;
+    border: 2px dashed $neutral-300;
+  }
+
+  &__image-text {
+    font-size: 0.875rem;
+    margin-top: 8px;
+    color: $neutral-600;
+    font-weight: 500;
+  }
+
+  &__colors {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  &__color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.active {
+      border-color: $primary-color;
+      transform: scale(1.2);
+    }
+  }
+
+  &__details {
+    text-align: center;
+  }
+
+  &__brand {
+    color: $neutral-600;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  &__model {
+    color: $neutral-900;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    line-height: 1.3;
+  }
+
+  &__pricing {
+    margin-bottom: 16px;
+  }
+
+  &__monthly {
+    color: $neutral-700;
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  &__price {
+    color: $primary-color;
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+
+  &__original-price {
+    color: $neutral-500;
+    text-decoration: line-through;
+    margin-left: 8px;
+    font-size: 0.9em;
+  }
+
+  &__financing {
+    color: $neutral-600;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+  }
+
+  &__full-price {
+    color: $neutral-700;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  &__promotion {
+    background: rgba($info-color, 0.1);
+    border: 1px solid rgba($info-color, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: 0.875rem;
+    color: $info-color;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__promotion-icon {
+    font-size: 1rem;
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 0;
+
+    &__image {
+      height: 160px;
+    }
+
+    &__model {
+      font-size: 1.25rem;
+    }
+  }
+}

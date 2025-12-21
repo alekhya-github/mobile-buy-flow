@@ -1,0 +1,129 @@
+.test-phone-service {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+
+  .test-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+
+    .test-button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &.fetch-button {
+        background-color: #007bff;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #0056b3;
+        }
+      }
+
+      &.axios-button {
+        background-color: #28a745;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #1e7e34;
+        }
+      }
+
+      &.clear-button {
+        background-color: #dc3545;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #c82333;
+        }
+      }
+    }
+  }
+
+  .errors-section {
+    margin-bottom: 30px;
+
+    .error {
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+
+      &.fetch-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      &.axios-error {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeaa7;
+      }
+    }
+  }
+
+  .results-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    .result-column {
+      h3 {
+        color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #eee;
+      }
+
+      .phone-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .phone-card {
+          background: #f8f9fa;
+          padding: 15px;
+          border-radius: 8px;
+          border-left: 4px solid #007bff;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+          h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 18px;
+          }
+
+          p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
