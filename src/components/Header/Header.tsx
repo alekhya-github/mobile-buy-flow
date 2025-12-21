@@ -9,7 +9,7 @@ const Header: React.FC = () => {
     <div className="header">
       <div className="header__container">
         <div className="header__logo">
-          <h1 className="header__title">Mobile Store</h1>
+          <h1 className="header__title">Mobile Home</h1>
         </div>
         <nav className="header__nav">
           <ul className="header__nav-list">
