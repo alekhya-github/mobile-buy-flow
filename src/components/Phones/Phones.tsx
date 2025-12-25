@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PhoneItem from "../PhoneItem/PhoneItem";
-import PhoneService, { Phone } from "../../services/phoneService";
+import PhoneMockService, { Phone } from "../../services/phoneMockService";
 import "./Phones.scss";
 
 const Phones: React.FC = () => {
@@ -24,7 +24,7 @@ const Phones: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        const phoneData = await PhoneService.getPhones();
+        const phoneData = await PhoneMockService.getPhones();
         setPhones(phoneData);
       } catch (err) {
         setError("Failed to load phones. Please try again.");
