@@ -44,15 +44,62 @@ export class ServerInfoService {
   // Get server information
   static async getServerInfo(): Promise<ServerInfo> {
     if (USE_MOCK_SERVER_INFO) {
-      // Return mock data for development
+      // Return dynamic mock data for development
       await this.simulateDelay(300);
-      console.log("🖥️ Returning mock server info");
+      console.log("🖥️ Returning dynamic mock server info");
+
+      const now = new Date();
+      const startTime = new Date(now.getTime() - Math.random() * 86400000); // Random start time within last day
+      const uptimeMs = now.getTime() - startTime.getTime();
+      const uptimeHours = Math.floor(uptimeMs / (1000 * 60 * 60));
+      const uptimeMinutes = Math.floor(
+        (uptimeMs % (1000 * 60 * 60)) / (1000 * 60)
+      );
+
+      // Generate dynamic instance info
+      const instanceTypes = ["t3.micro", "t3.small", "t3.medium", "t3.large"];
+      const regions = ["us-east-1", "us-west-2", "eu-west-1", "ap-southeast-1"];
+      const azSuffixes = ["a", "b", "c"];
+
+      const selectedRegion =
+        regions[Math.floor(Math.random() * regions.length)];
+      const selectedAZ =
+        selectedRegion +
+        azSuffixes[Math.floor(Math.random() * azSuffixes.length)];
+      const selectedInstance =
+        instanceTypes[Math.floor(Math.random() * instanceTypes.length)];
+
       return {
         ...mockServerInfo,
-        serverTime: new Date().toISOString(),
-        uptime: `${Math.floor(Math.random() * 10)} hours ${Math.floor(
-          Math.random() * 60
-        )} minutes`,
+        hostname:
+          window.location.hostname === "localhost"
+            ? `ip-172-31-${Math.floor(Math.random() * 255)}-${Math.floor(
+                Math.random() * 255
+              )}`
+            : window.location.hostname,
+        instanceId: `i-${Math.random().toString(16).substr(2, 16)}`,
+        region: selectedRegion,
+        availabilityZone: selectedAZ,
+        instanceType: selectedInstance,
+        publicIp:
+          window.location.hostname === "localhost"
+            ? `54.${Math.floor(Math.random() * 255)}.${Math.floor(
+                Math.random() * 255
+              )}.${Math.floor(Math.random() * 255)}`
+            : window.location.hostname,
+        privateIp: `172.31.${Math.floor(Math.random() * 255)}.${Math.floor(
+          Math.random() * 255
+        )}`,
+        loadBalancer: `mobile-app-alb-${Math.random()
+          .toString(36)
+          .substr(2, 9)}`,
+        environment:
+          window.location.hostname === "localhost"
+            ? "development"
+            : "production",
+        serverTime: now.toISOString(),
+        uptime: `${uptimeHours} hours ${uptimeMinutes} minutes`,
+        version: "1.0.0",
       };
     }
 
@@ -79,18 +126,21 @@ export class ServerInfoService {
     }
   }
 
-  // Get browser/client info
+  // Get essential client info for AWS deployment validation
   static getClientInfo() {
     return {
-      userAgent: navigator.userAgent,
+      requestTime: new Date().toISOString(),
+      clientIP: "Client IP (available in AWS logs)",
+      userAgent: navigator.userAgent.split(" ")[0], // Just browser name
       platform: navigator.platform,
-      language: navigator.language,
-      cookieEnabled: navigator.cookieEnabled,
+      protocol: window.location.protocol,
+      host: window.location.host,
+      port:
+        window.location.port ||
+        (window.location.protocol === "https:" ? "443" : "80"),
       onLine: navigator.onLine,
-      clientTime: new Date().toISOString(),
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      url: window.location.href,
-      referrer: document.referrer || "Direct access",
+      language: navigator.language,
     };
   }
 

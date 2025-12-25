@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ServerInfoService, {
   ServerInfo,
-} from "../../services/serverInfoService";
+} from "../../services/realServerInfoService";
 import "./Home.scss";
 
 const Home: React.FC = () => {
   const [serverInfo, setServerInfo] = useState<ServerInfo | null>(null);
-  const [clientInfo, setClientInfo] = useState<any>(null);
   const [networkTiming, setNetworkTiming] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,10 +20,6 @@ const Home: React.FC = () => {
         // Fetch server info
         const info = await ServerInfoService.getServerInfo();
         setServerInfo(info);
-
-        // Get client info
-        const client = ServerInfoService.getClientInfo();
-        setClientInfo(client);
 
         // Get network timing
         const timing = await ServerInfoService.getNetworkTiming();
@@ -169,34 +164,6 @@ const Home: React.FC = () => {
 
         {showDetails && (
           <div className="advanced-details">
-            {clientInfo && (
-              <div className="info-card client-info">
-                <h4>💻 Client Information</h4>
-                <div className="info-row">
-                  <span className="label">Platform:</span>
-                  <span className="value">{clientInfo.platform}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Language:</span>
-                  <span className="value">{clientInfo.language}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Timezone:</span>
-                  <span className="value">{clientInfo.timezone}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">Online:</span>
-                  <span
-                    className={`value ${
-                      clientInfo.onLine ? "online" : "offline"
-                    }`}
-                  >
-                    {clientInfo.onLine ? "🟢 Online" : "🔴 Offline"}
-                  </span>
-                </div>
-              </div>
-            )}
-
             {networkTiming && (
               <div className="info-card timing-info">
                 <h4>⚡ Network Performance</h4>
