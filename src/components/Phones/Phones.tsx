@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PhoneItem from "../PhoneItem/PhoneItem";
-import PhoneMockService, { Phone } from "../../services/phoneMockService";
+import PhoneService, { PhoneListItem } from "../../services/phoneService";
 import "./Phones.scss";
 
 const Phones: React.FC = () => {
   const [selectedColors, setSelectedColors] = useState<{
     [key: string]: string;
   }>({});
-  const [phones, setPhones] = useState<Phone[]>([]);
+  const [phones, setPhones] = useState<PhoneListItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,13 +18,13 @@ const Phones: React.FC = () => {
     }));
   };
 
-  // Fetch phones from service
+  // Fetch phones from API service
   useEffect(() => {
     const fetchPhones = async () => {
       try {
         setLoading(true);
         setError(null);
-        const phoneData = await PhoneMockService.getPhones();
+        const phoneData = await PhoneService.getPhones();
         setPhones(phoneData);
       } catch (err) {
         setError("Failed to load phones. Please try again.");
