@@ -1,0 +1,411 @@
+.phone-details {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  // Loading state
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  &__spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e0e0e0;
+    border-top-color: #1976d2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  // Error state
+  &__error {
+    text-align: center;
+    padding: 40px;
+    color: #d32f2f;
+  }
+
+  // Back link
+  &__back-link {
+    display: inline-block;
+    color: #1976d2;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Main content layout
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Gallery section
+  &__gallery {
+    position: sticky;
+    top: 20px;
+  }
+
+  &__main-image {
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+  }
+
+  &__image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    font-size: 80px;
+
+    span {
+      font-size: 16px;
+      margin-top: 10px;
+      color: #666;
+    }
+  }
+
+  &__color-label {
+    font-size: 14px !important;
+    color: #1976d2 !important;
+    font-weight: 500;
+  }
+
+  &__thumbnails {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__thumbnail {
+    width: 80px;
+    height: 80px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    overflow: hidden;
+
+    &:hover {
+      border-color: #1976d2;
+    }
+  }
+
+  &__thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  // Info section
+  &__info {
+    padding: 20px 0;
+  }
+
+  &__title {
+    font-size: 32px;
+    font-weight: 400;
+    margin: 0 0 16px 0;
+    color: #333;
+  }
+
+  &__badge {
+    display: inline-block;
+    background: #1976d2;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  // Purchase options
+  &__purchase-options {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      margin: 0 0 12px 0;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__purchase-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  &__purchase-btn {
+    flex: 1;
+    padding: 16px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: #1976d2;
+    }
+
+    &.active {
+      border-color: #1976d2;
+      background: #f5f9ff;
+    }
+  }
+
+  &__promo {
+    background: #1976d2;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  // Colors
+  &__colors {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      margin: 0 0 12px 0;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__color-options {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__color-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &.active {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px white, 0 0 0 4px #1976d2;
+    }
+  }
+
+  // Storage
+  &__storage {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      margin: 0 0 12px 0;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__storage-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__storage-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: #1976d2;
+    }
+
+    &.active {
+      border-color: #1976d2;
+      background: #f5f9ff;
+    }
+  }
+
+  &__storage-capacity {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &__storage-price {
+    font-size: 14px;
+    color: #666;
+  }
+
+  // Availability
+  &__availability {
+    margin-bottom: 24px;
+
+    h3 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      margin: 0 0 8px 0;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__status {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+
+    &--in-stock {
+      color: #2e7d32;
+    }
+
+    &--out-of-stock {
+      color: #d32f2f;
+    }
+
+    &--backorder {
+      color: #f57c00;
+    }
+
+    &--pre-order {
+      color: #1976d2;
+    }
+  }
+
+  &__ship-date {
+    font-size: 12px;
+    color: #666;
+    margin: 4px 0 0 0;
+  }
+
+  // Pricing
+  &__pricing {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+  }
+
+  &__monthly-price {
+    margin-bottom: 12px;
+  }
+
+  &__price-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    letter-spacing: 0.5px;
+  }
+
+  &__price-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  &__original-price {
+    font-size: 18px;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  &__current-price {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  &__financing {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  &__full-price {
+    font-size: 14px;
+    color: #333;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  // Add to cart button
+  &__add-btn {
+    width: 100%;
+    padding: 16px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 16px;
+
+    &:hover {
+      background: #1565c0;
+    }
+  }
+
+  // Free shipping
+  &__shipping {
+    text-align: center;
+    font-size: 14px;
+    color: #2e7d32;
+    font-weight: 500;
+  }
+}

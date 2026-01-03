@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./PhoneItem.scss";
 
 interface PhoneItemProps {
@@ -36,14 +37,17 @@ const PhoneItem: React.FC<PhoneItemProps> = ({
     <div className="phone-item">
       {is5G && <div className="phone-item__badge">5G Device</div>}
 
-      <div className="phone-item__image-container">
-        <div className="phone-item__image-placeholder">
-          📱
-          <span className="phone-item__image-text">
-            {brand} {model}
-          </span>
+      {/* Clickable link to phone details */}
+      <Link to={`/mobile/phone/${id}`} className="phone-item__link">
+        <div className="phone-item__image-container">
+          <div className="phone-item__image-placeholder">
+            📱
+            <span className="phone-item__image-text">
+              {brand} {model}
+            </span>
+          </div>
         </div>
-      </div>
+      </Link>
 
       <div className="phone-item__colors">
         {colors.map((color, index) => (
@@ -61,7 +65,9 @@ const PhoneItem: React.FC<PhoneItemProps> = ({
 
       <div className="phone-item__details">
         <div className="phone-item__brand">{brand}</div>
-        <h3 className="phone-item__model">{model}</h3>
+        <Link to={`/mobile/phone/${id}`} className="phone-item__model-link">
+          <h3 className="phone-item__model">{model}</h3>
+        </Link>
 
         <div className="phone-item__pricing">
           <div className="phone-item__monthly">

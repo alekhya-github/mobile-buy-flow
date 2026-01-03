@@ -10,6 +10,7 @@ import Footer from "./components/Footer/Footer";
 import MainContent from "./components/MainContent/MainContent";
 import Home from "./components/Home/Home";
 import Phones from "./components/Phones/Phones";
+import PhoneDetails from "./components/PhoneDetails/PhoneDetails";
 import "./App.scss";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/mobile/home" element={<Home />} />
             <Route path="/mobile/phones" element={<Phones />} />
+            <Route path="/mobile/phone/:id" element={<PhoneDetails />} />
             <Route path="/" element={<Navigate to="/mobile/home" replace />} />
           </Routes>
         </MainContent>
