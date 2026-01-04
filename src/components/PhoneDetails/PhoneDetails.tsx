@@ -268,6 +268,11 @@ const PhoneDetails: React.FC = () => {
       {/* Trade-In Modal */}
       <TradeInModal
         isOpen={isTradeInModalOpen}
+        phoneInfo={{
+          phoneId: id,
+          phoneBrand: phone.brand,
+          phoneModel: phone.model,
+        }}
         onClose={() => setIsTradeInModalOpen(false)}
       />
     </div>
