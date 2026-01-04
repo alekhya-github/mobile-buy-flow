@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import PhoneService, { Phone } from "../../services/phoneService";
+import TradeInSection from "../TradeInSection/TradeInSection";
+import TradeInModal from "../TradeInSection/TradeInModal";
 import "./PhoneDetails.scss";
 
 const PhoneDetails: React.FC = () => {
@@ -10,6 +12,7 @@ const PhoneDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedStorage, setSelectedStorage] = useState<string>("");
+  const [isTradeInModalOpen, setIsTradeInModalOpen] = useState<boolean>(false);
 
   // Fetch phone details when component mounts or id changes
   useEffect(() => {
@@ -208,6 +211,15 @@ const PhoneDetails: React.FC = () => {
             )}
           </div>
 
+          {/* Trade-In Section */}
+          <TradeInSection
+            onTradeInSelect={(hasTradeIn) => {
+              if (hasTradeIn) {
+                setIsTradeInModalOpen(true);
+              }
+            }}
+          />
+
           {/* Pricing */}
           <div className="phone-details__pricing">
             <div className="phone-details__monthly-price">
@@ -247,6 +259,12 @@ const PhoneDetails: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Trade-In Modal */}
+      <TradeInModal
+        isOpen={isTradeInModalOpen}
+        onClose={() => setIsTradeInModalOpen(false)}
+      />
     </div>
   );
 };

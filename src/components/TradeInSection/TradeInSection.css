@@ -1,0 +1,45 @@
+.trade-in-section {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.trade-in-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.trade-in-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.trade-in-btn {
+  flex: 1;
+  max-width: 240px;
+  padding: 16px 32px;
+  background-color: #ffffff;
+  border: 2px solid #d0d0d0;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.trade-in-btn:hover {
+  border-color: #0066cc;
+  background-color: #f8f9fa;
+}
+
+.trade-in-btn:active {
+  transform: scale(0.98);
+}
