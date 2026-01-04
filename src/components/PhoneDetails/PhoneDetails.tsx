@@ -213,6 +213,7 @@ const PhoneDetails: React.FC = () => {
 
           {/* Trade-In Section */}
           <TradeInSection
+            phoneId={id}
             onTradeInSelect={(hasTradeIn) => {
               if (hasTradeIn) {
                 setIsTradeInModalOpen(true);
