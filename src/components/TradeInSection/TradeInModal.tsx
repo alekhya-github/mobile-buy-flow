@@ -6,6 +6,7 @@ interface TradeInModalProps {
   isOpen: boolean;
   phoneInfo?: PhoneInfo;
   onClose: () => void;
+  onAccept?: (offer: TradeInOfferResponse) => void;
 }
 
 interface TradeInOfferResponse {
@@ -26,6 +27,7 @@ const TradeInModal: React.FC<TradeInModalProps> = ({
   isOpen,
   phoneInfo,
   onClose,
+  onAccept,
 }) => {
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [selectedModel, setSelectedModel] = useState<string>("");
@@ -65,7 +67,9 @@ const TradeInModal: React.FC<TradeInModalProps> = ({
   };
 
   const handleAccept = () => {
-    console.log("Trade-in accepted:", offerData);
+    if (offerData && onAccept) {
+      onAccept(offerData);
+    }
     onClose();
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import PhoneService, { Phone } from "../../services/phoneService";
-import TradeInSection from "../TradeInSection/TradeInSection";
+import TradeInSection, { TradeInOffer } from "../TradeInSection/TradeInSection";
 import TradeInModal from "../TradeInSection/TradeInModal";
 import "./PhoneDetails.scss";
 
@@ -13,6 +13,8 @@ const PhoneDetails: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedStorage, setSelectedStorage] = useState<string>("");
   const [isTradeInModalOpen, setIsTradeInModalOpen] = useState<boolean>(false);
+  const [acceptedTradeInOffer, setAcceptedTradeInOffer] =
+    useState<TradeInOffer | null>(null);
 
   // Fetch phone details when component mounts or id changes
   useEffect(() => {
@@ -218,11 +220,13 @@ const PhoneDetails: React.FC = () => {
               phoneBrand: phone.brand,
               phoneModel: phone.model,
             }}
+            acceptedOffer={acceptedTradeInOffer}
             onTradeInSelect={(hasTradeIn) => {
               if (hasTradeIn) {
                 setIsTradeInModalOpen(true);
               }
             }}
+            onRemove={() => setAcceptedTradeInOffer(null)}
           />
 
           {/* Pricing */}
@@ -274,6 +278,14 @@ const PhoneDetails: React.FC = () => {
           phoneModel: phone.model,
         }}
         onClose={() => setIsTradeInModalOpen(false)}
+        onAccept={(offer) => {
+          setAcceptedTradeInOffer({
+            tradeinValue: offer.tradeinValue,
+            tradeinPromotion: offer.tradeinPromotion,
+            tradeinPhoneBrand: offer.tradeinPhoneBrand,
+            tradeinModel: offer.tradeinModel,
+          });
+        }}
       />
     </div>
   );
