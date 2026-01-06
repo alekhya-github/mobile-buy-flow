@@ -5,6 +5,21 @@ import TradeInSection, { TradeInOffer } from "../TradeInSection/TradeInSection";
 import TradeInModal from "../TradeInSection/TradeInModal";
 import "./PhoneDetails.scss";
 
+// AWS S3 bucket host for images
+const S3_IMAGE_HOST = "https://rans-mobile-s3.s3.us-east-2.amazonaws.com";
+
+// Helper function to get full image URL
+const getImageUrl = (imagePath: string): string => {
+  if (!imagePath) return "";
+  // If already a full URL, return as-is
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+  // Remove leading slash if present to avoid double slashes
+  const cleanPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
+  return `${S3_IMAGE_HOST}/${cleanPath}`;
+};
+
 const PhoneDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [phone, setPhone] = useState<Phone | null>(null);
@@ -57,7 +72,8 @@ const PhoneDetails: React.FC = () => {
   const getSelectedColorImage = (): string => {
     if (!phone) return "";
     const colorOption = phone.colors.find((c) => c.name === selectedColor);
-    return colorOption?.image || phone.images.main;
+    const imagePath = colorOption?.image || phone.images.main;
+    return getImageUrl(imagePath);
   };
 
   // Get the selected storage option
@@ -116,7 +132,7 @@ const PhoneDetails: React.FC = () => {
             {phone.images.gallery.map((img, index) => (
               <div key={index} className="phone-details__thumbnail">
                 <img
-                  src={img}
+                  src={getImageUrl(img)}
                   alt={`${phone.brand} ${phone.model} view ${index + 1}`}
                   className="phone-details__thumbnail-image"
                 />
