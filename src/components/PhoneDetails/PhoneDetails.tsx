@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import PhoneService, { Phone } from "../../services/phoneService";
 import TradeInSection, { TradeInOffer } from "../TradeInSection/TradeInSection";
 import TradeInModal from "../TradeInSection/TradeInModal";
@@ -22,6 +22,7 @@ const getImageUrl = (imagePath: string): string => {
 
 const PhoneDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [phone, setPhone] = useState<Phone | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -109,6 +110,20 @@ const PhoneDetails: React.FC = () => {
   }
 
   const selectedStorageOption = getSelectedStorageOption();
+
+  // Handle Next button click - navigate to customer check
+  const handleNext = () => {
+    navigate("/mobile/customer-check", {
+      state: {
+        phoneId: id,
+        phoneBrand: phone?.brand,
+        phoneModel: phone?.model,
+        selectedColor,
+        selectedStorage,
+        tradeInOffer: acceptedTradeInOffer,
+      },
+    });
+  };
 
   // Main UI
   return (
@@ -274,7 +289,9 @@ const PhoneDetails: React.FC = () => {
           </div>
 
           {/* Add to Cart Button */}
-          <button className="phone-details__add-btn">Next</button>
+          <button className="phone-details__add-btn" onClick={handleNext}>
+            Next
+          </button>
 
           {/* Free Shipping */}
           {phone.freeShipping && (
