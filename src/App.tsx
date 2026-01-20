@@ -11,6 +11,7 @@ import MainContent from "./components/MainContent/MainContent";
 import Home from "./components/Home/Home";
 import Phones from "./components/Phones/Phones";
 import PhoneDetails from "./components/PhoneDetails/PhoneDetails";
+import ServerInfo from "./components/ServerInfo/ServerInfo";
 import CustomerCheck from "./components/CustomerCheck/CustomerCheck";
 import SignIn from "./components/SignIn/SignIn";
 import IdentityProtection from "./components/IdentityProtection/IdentityProtection";
@@ -25,6 +26,7 @@ function App() {
           <Routes>
             <Route path="/mobile/home" element={<Home />} />
             <Route path="/mobile/phones" element={<Phones />} />
+            <Route path="/mobile/server-info" element={<ServerInfo />} />
             <Route path="/mobile/phone/:id" element={<PhoneDetails />} />
             <Route path="/mobile/customer-check" element={<CustomerCheck />} />
             <Route path="/mobile/sign-in" element={<SignIn />} />

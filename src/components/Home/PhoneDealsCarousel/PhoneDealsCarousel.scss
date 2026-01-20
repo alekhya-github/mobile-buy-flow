@@ -1,0 +1,184 @@
+.phone-deals-carousel {
+  padding: 60px 20px;
+  background: white;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin: 0 0 40px 0;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
+  }
+}
+
+.carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+
+  &__viewport {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__track {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  &__slide {
+    min-width: 50%;
+    padding: 0 10px;
+
+    @media (max-width: 768px) {
+      min-width: 100%;
+    }
+  }
+
+  &__button {
+    background: #007bff;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    line-height: 1;
+    padding: 0;
+
+    &:hover:not(:disabled) {
+      background: #0056b3;
+      transform: scale(1.1);
+    }
+
+    &:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    @media (max-width: 768px) {
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+    }
+  }
+
+  &__indicators {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  &__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: #d0d0d0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+
+    &:hover {
+      background: #a0a0a0;
+    }
+
+    &--active {
+      background: #007bff;
+      width: 32px;
+      border-radius: 6px;
+    }
+  }
+}
+
+.deal-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  &__image {
+    height: 250px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    @media (max-width: 768px) {
+      height: 200px;
+    }
+  }
+
+  &__placeholder {
+    font-size: 80px;
+    opacity: 0.5;
+  }
+
+  &__content {
+    padding: 24px;
+  }
+
+  &__name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+  }
+
+  &__deal {
+    font-size: 16px;
+    color: #666;
+    margin: 0 0 20px 0;
+    min-height: 48px;
+  }
+
+  &__cta {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: #0056b3;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

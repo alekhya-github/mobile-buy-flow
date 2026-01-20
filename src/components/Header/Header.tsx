@@ -33,6 +33,16 @@ const Header: React.FC = () => {
                 Phones
               </Link>
             </li>
+            <li>
+              <Link
+                to="/mobile/server-info"
+                className={`header__nav-link ${
+                  location.pathname === "/mobile/server-info" ? "active" : ""
+                }`}
+              >
+                Server Info
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
