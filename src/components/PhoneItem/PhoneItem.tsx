@@ -40,12 +40,21 @@ const PhoneItem: React.FC<PhoneItemProps> = ({
       {/* Clickable link to phone details */}
       <Link to={`/mobile/phone/${id}`} className="phone-item__link">
         <div className="phone-item__image-container">
-          <div className="phone-item__image-placeholder">
-            📱
-            <span className="phone-item__image-text">
-              {brand} {model}
-            </span>
-          </div>
+          <img
+            src={image}
+            alt={`${brand} ${model}`}
+            className="phone-item__image"
+            onError={(e) => {
+              // Fallback to placeholder if image fails to load
+              e.currentTarget.style.display = "none";
+              e.currentTarget.parentElement!.innerHTML = `
+                <div class="phone-item__image-placeholder">
+                  📱
+                  <span class="phone-item__image-text">${brand} ${model}</span>
+                </div>
+              `;
+            }}
+          />
         </div>
       </Link>
 

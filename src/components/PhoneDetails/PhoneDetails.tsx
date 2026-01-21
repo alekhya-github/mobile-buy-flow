@@ -5,19 +5,15 @@ import TradeInSection, { TradeInOffer } from "../TradeInSection/TradeInSection";
 import TradeInModal from "../TradeInSection/TradeInModal";
 import "./PhoneDetails.scss";
 
-// AWS S3 bucket host for images
-const S3_IMAGE_HOST = "https://rans-mobile-s3.s3.us-east-2.amazonaws.com";
-
-// Helper function to get full image URL
+// Helper function to get full image URL (uses local public folder)
 const getImageUrl = (imagePath: string): string => {
   if (!imagePath) return "";
   // If already a full URL, return as-is
   if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
     return imagePath;
   }
-  // Remove leading slash if present to avoid double slashes
-  const cleanPath = imagePath.startsWith("/") ? imagePath.slice(1) : imagePath;
-  return `${S3_IMAGE_HOST}/${cleanPath}`;
+  // For local images, return the path as-is (React will resolve from public folder)
+  return imagePath;
 };
 
 const PhoneDetails: React.FC = () => {
@@ -50,12 +46,12 @@ const PhoneDetails: React.FC = () => {
           setPhone(phoneData);
           // Set default selections
           setSelectedColor(
-            phoneData.selectedColor || phoneData.colors[0]?.name || ""
+            phoneData.selectedColor || phoneData.colors[0]?.name || "",
           );
           setSelectedStorage(
             phoneData.selectedStorage ||
               phoneData.storageOptions[0]?.capacity ||
-              ""
+              "",
           );
         }
       } catch (err) {
