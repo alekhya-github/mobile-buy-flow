@@ -16,6 +16,8 @@ import CustomerCheck from "./components/CustomerCheck/CustomerCheck";
 import SignIn from "./components/SignIn/SignIn";
 import IdentityProtection from "./components/IdentityProtection/IdentityProtection";
 import "./App.scss";
+import PlansPage from "./components/PlansPage/PlansPage";
+import CartPage from "./components/CartPage/CartPage";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
               path="/mobile/identity-protection"
               element={<IdentityProtection />}
             />
+            <Route path="/plans" element={<PlansPage />} />
+            <Route path="/cart" element={<CartPage />} />
             <Route path="/" element={<Navigate to="/mobile/home" replace />} />
           </Routes>
         </MainContent>

@@ -74,6 +74,8 @@ const IdentityProtection: React.FC = () => {
         identityInfo,
       },
     });
+    // Route to plans page after successful validation
+    navigate("/plans");
   };
 
   const handleGoBack = () => {
