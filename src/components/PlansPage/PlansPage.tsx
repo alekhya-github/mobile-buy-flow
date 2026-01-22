@@ -3,8 +3,16 @@ import { useNavigate } from "react-router-dom";
 import "./PlansPage.scss";
 import { fetchPlans } from "../../services/plansService";
 import { addToCart, CartPayload } from "../../services/cartService";
+import { useMobileBuyFlow } from "../../context/PhoneSelectionContext";
 
 const PlansPage: React.FC = () => {
+  const {
+    state: buyFlowState,
+    updatePlanDetails,
+    updatePortInDetails,
+    updateInsurancePlanDetails,
+  } = useMobileBuyFlow();
+  const { phoneDetails, tradeInDetails } = buyFlowState;
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const navigate = useNavigate();
   const [selectedProtection, setSelectedProtection] = useState<string>("none");
@@ -99,6 +107,53 @@ const PlansPage: React.FC = () => {
         });
       }
 
+      // Save plan selections to context before API call
+      const selectedPlanObj = plans.find((p) => p.id === selectedPlan);
+      if (selectedPlanObj) {
+        updatePlanDetails({
+          planId: selectedPlanObj.id,
+          planName: selectedPlanObj.name,
+          planPrice: String(
+            selectedPlanObj.price?.monthlyCharge ||
+              selectedPlanObj.price?.monthlyRecurringCharge ||
+              0,
+          ),
+          dataAllowance: selectedPlanObj.description || "",
+        });
+      }
+
+      updatePortInDetails({
+        isPortingNumber: phoneNumberOption === "keep",
+        currentCarrier: "",
+        phoneNumber: phoneNumberOption === "keep" ? mobileNumber : "",
+        accountNumber: "",
+      });
+
+      if (selectedProtection && selectedProtection !== "none") {
+        const selectedInsuranceObj = insurancePlans.find(
+          (p) => p.id === selectedProtection,
+        );
+        if (selectedInsuranceObj) {
+          updateInsurancePlanDetails({
+            hasInsurance: true,
+            insurancePlanId: selectedInsuranceObj.id,
+            insurancePlanName: selectedInsuranceObj.name,
+            insurancePrice: String(
+              selectedInsuranceObj.price?.monthlyCharge ||
+                selectedInsuranceObj.price?.monthlyRecurringCharge ||
+                0,
+            ),
+          });
+        }
+      } else {
+        updateInsurancePlanDetails({
+          hasInsurance: false,
+          insurancePlanId: "",
+          insurancePlanName: "",
+          insurancePrice: "0",
+        });
+      }
+
       // Build cart payload
       const payload: CartPayload = {
         fulfillmentMethod: "SHIP_TO_HOME",
@@ -142,13 +197,60 @@ const PlansPage: React.FC = () => {
     <div className="plans-page">
       <h1 className="plans-page__title">Customize Your Plan</h1>
       <div className="plans-page__main">
-        <div className="plans-page__image">
-          <img
-            src="/images/iphone15.png"
-            alt="iPhone 15 128GB with eSIM, Black"
-          />
-          <div className="plans-page__image-label">
-            iPhone 15 128GB with eSIM, Black
+        <div className="plans-page__phone-summary">
+          <h3 className="plans-page__summary-title">Your Selection</h3>
+          <div className="plans-page__phone-image">
+            <img
+              src={phoneDetails.phoneImage || ""}
+              alt={`${phoneDetails.phoneBrand} ${phoneDetails.phoneModel}`}
+            />
+          </div>
+          <div className="plans-page__phone-info">
+            <div className="plans-page__phone-brand">
+              {phoneDetails.phoneBrand}
+            </div>
+            <div className="plans-page__phone-model">
+              {phoneDetails.phoneModel}
+            </div>
+
+            <div className="plans-page__detail-row">
+              <span className="plans-page__detail-label">Color:</span>
+              <span className="plans-page__detail-value">
+                {phoneDetails.selectedColor}
+              </span>
+            </div>
+            <div className="plans-page__detail-row">
+              <span className="plans-page__detail-label">Storage:</span>
+              <span className="plans-page__detail-value">
+                {phoneDetails.selectedStorage}
+              </span>
+            </div>
+            <div className="plans-page__detail-row">
+              <span className="plans-page__detail-label">Full Price:</span>
+              <span className="plans-page__detail-value">
+                ${phoneDetails.fullPrice}
+              </span>
+            </div>
+            <div className="plans-page__detail-row">
+              <span className="plans-page__detail-label">Monthly:</span>
+              <span className="plans-page__detail-value">
+                ${phoneDetails.monthlyPrice}/mo
+              </span>
+            </div>
+
+            {tradeInDetails.hasTradeIn && (
+              <div className="plans-page__trade-in">
+                <div className="plans-page__trade-in-label">
+                  Trade-In Applied
+                </div>
+                <div className="plans-page__trade-in-device">
+                  {tradeInDetails.tradeInDevice}
+                </div>
+                <div className="plans-page__trade-in-value">
+                  -${tradeInDetails.tradeInValue} credit
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="plans-page__content">

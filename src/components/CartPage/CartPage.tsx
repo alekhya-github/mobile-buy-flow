@@ -1,9 +1,19 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import "./CartPage.scss";
+import { useMobileBuyFlow } from "../../context/PhoneSelectionContext";
 
 const CartPage: React.FC = () => {
   const location = useLocation();
+  const { state: buyFlowState } = useMobileBuyFlow();
+  const {
+    phoneDetails,
+    tradeInDetails,
+    planDetails,
+    portInDetails,
+    insurancePlanDetails,
+  } = buyFlowState;
+
   // Try to get cart data from location state first, then from localStorage
   let cartData = location.state?.cartData;
 
@@ -128,153 +138,275 @@ const CartPage: React.FC = () => {
           <button className="cart-page__checkout-btn-top">CHECKOUT</button>
         </div>
 
-        <div className="cart-page__container">
-          <div className="cart-page__item">
-            <div className="cart-page__item-image">
-              <img
-                src={
-                  item?.variants?.[0]?.images?.primary?.url ||
-                  "/images/iphone15.png"
-                }
-                alt={`${brand} ${deviceName}`}
-              />
-            </div>
-            <div className="cart-page__item-details">
-              <div className="cart-page__item-row cart-page__item-row--top">
-                <input
-                  className="cart-page__number-input"
-                  value={nickname}
-                  readOnly
+        <div className="cart-page__layout">
+          {/* Left side - Selection Summary from Context */}
+          <div className="cart-page__summary-sidebar">
+            <h3 className="cart-page__summary-title">
+              Your Complete Selection
+            </h3>
+
+            {/* Phone Details */}
+            <div className="cart-page__summary-section">
+              <h4 className="cart-page__summary-subtitle">Device</h4>
+              <div className="cart-page__phone-image">
+                <img
+                  src={phoneDetails.phoneImage || ""}
+                  alt={`${phoneDetails.phoneBrand} ${phoneDetails.phoneModel}`}
                 />
-                <span className="cart-page__number-label">
-                  {portingFlag === "Y" ? "Keep Number" : "New Number"}
+              </div>
+              <div className="cart-page__phone-brand">
+                {phoneDetails.phoneBrand}
+              </div>
+              <div className="cart-page__phone-model">
+                {phoneDetails.phoneModel}
+              </div>
+              <div className="cart-page__detail-row">
+                <span className="cart-page__detail-label">Color:</span>
+                <span className="cart-page__detail-value">
+                  {phoneDetails.selectedColor}
                 </span>
-                <div className="cart-page__actions">
-                  <span className="cart-page__edit">Edit</span>
-                  <span className="cart-page__remove">Remove</span>
+              </div>
+              <div className="cart-page__detail-row">
+                <span className="cart-page__detail-label">Storage:</span>
+                <span className="cart-page__detail-value">
+                  {phoneDetails.selectedStorage}
+                </span>
+              </div>
+              <div className="cart-page__detail-row">
+                <span className="cart-page__detail-label">Monthly:</span>
+                <span className="cart-page__detail-value">
+                  ${phoneDetails.monthlyPrice}/mo
+                </span>
+              </div>
+            </div>
+
+            {/* Trade-In Details */}
+            {tradeInDetails.hasTradeIn && (
+              <div className="cart-page__summary-section">
+                <h4 className="cart-page__summary-subtitle">Trade-In</h4>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Device:</span>
+                  <span className="cart-page__detail-value">
+                    {tradeInDetails.tradeInDevice}
+                  </span>
+                </div>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Credit:</span>
+                  <span
+                    className="cart-page__detail-value"
+                    style={{ color: "#0066cc" }}
+                  >
+                    -${tradeInDetails.tradeInValue}
+                  </span>
                 </div>
               </div>
-              <div className="cart-page__desc">
-                {brand} {deviceName}, {color}, {capacity} with {simType}
+            )}
+
+            {/* Plan Details */}
+            {planDetails.planName && (
+              <div className="cart-page__summary-section">
+                <h4 className="cart-page__summary-subtitle">Plan</h4>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Plan:</span>
+                  <span className="cart-page__detail-value">
+                    {planDetails.planName}
+                  </span>
+                </div>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Price:</span>
+                  <span className="cart-page__detail-value">
+                    ${planDetails.planPrice}/mo
+                  </span>
+                </div>
               </div>
-              <div className="cart-page__item-pricing">
-                {paymentPlan && (
-                  <div className="cart-page__pricing-row">
-                    <span>
-                      Device Payment, $
-                      {paymentPlan.price.monthlyRecurringCharge}/mo for{" "}
-                      {paymentPlan.options?.[0]?.term || 36} months, 0% APR
+            )}
+
+            {/* Insurance Details */}
+            {insurancePlanDetails.hasInsurance && (
+              <div className="cart-page__summary-section">
+                <h4 className="cart-page__summary-subtitle">Protection</h4>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Plan:</span>
+                  <span className="cart-page__detail-value">
+                    {insurancePlanDetails.insurancePlanName}
+                  </span>
+                </div>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Price:</span>
+                  <span className="cart-page__detail-value">
+                    ${insurancePlanDetails.insurancePrice}/mo
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Port-In Details */}
+            {portInDetails.isPortingNumber && (
+              <div className="cart-page__summary-section">
+                <h4 className="cart-page__summary-subtitle">Phone Number</h4>
+                <div className="cart-page__detail-row">
+                  <span className="cart-page__detail-label">Porting:</span>
+                  <span className="cart-page__detail-value">
+                    {portInDetails.phoneNumber}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right side - Cart Details */}
+          <div className="cart-page__cart-content">
+            <div className="cart-page__container">
+              <div className="cart-page__item">
+                <div className="cart-page__item-image">
+                  <img
+                    src={
+                      item?.variants?.[0]?.images?.primary?.url ||
+                      "/images/iphone15.png"
+                    }
+                    alt={`${brand} ${deviceName}`}
+                  />
+                </div>
+                <div className="cart-page__item-details">
+                  <div className="cart-page__item-row cart-page__item-row--top">
+                    <input
+                      className="cart-page__number-input"
+                      value={nickname}
+                      readOnly
+                    />
+                    <span className="cart-page__number-label">
+                      {portingFlag === "Y" ? "Keep Number" : "New Number"}
                     </span>
-                    <span className="cart-page__price">
-                      ${paymentPlan.price.monthlyRecurringCharge}
-                    </span>
+                    <div className="cart-page__actions">
+                      <span className="cart-page__edit">Edit</span>
+                      <span className="cart-page__remove">Remove</span>
+                    </div>
                   </div>
-                )}
-                {selectedRatePlan && (
-                  <div className="cart-page__pricing-row">
-                    <span>
-                      {selectedRatePlan.name} $
-                      {ratePlan.price.monthlyRecurringCharge}/line
-                    </span>
-                    <span className="cart-page__price">
-                      ${ratePlan.price.monthlyRecurringCharge}
-                    </span>
+                  <div className="cart-page__desc">
+                    {brand} {deviceName}, {color}, {capacity} with {simType}
                   </div>
-                )}
-                {promotions
-                  .filter((p: any) => p.promoDisplayable)
-                  .map((promo: any, index: number) => (
-                    <React.Fragment key={index}>
+                  <div className="cart-page__item-pricing">
+                    {paymentPlan && (
+                      <div className="cart-page__pricing-row">
+                        <span>
+                          Device Payment, $
+                          {paymentPlan.price.monthlyRecurringCharge}/mo for{" "}
+                          {paymentPlan.options?.[0]?.term || 36} months, 0% APR
+                        </span>
+                        <span className="cart-page__price">
+                          ${paymentPlan.price.monthlyRecurringCharge}
+                        </span>
+                      </div>
+                    )}
+                    {selectedRatePlan && (
+                      <div className="cart-page__pricing-row">
+                        <span>
+                          {selectedRatePlan.name} $
+                          {ratePlan.price.monthlyRecurringCharge}/line
+                        </span>
+                        <span className="cart-page__price">
+                          ${ratePlan.price.monthlyRecurringCharge}
+                        </span>
+                      </div>
+                    )}
+                    {promotions
+                      .filter((p: any) => p.promoDisplayable)
+                      .map((promo: any, index: number) => (
+                        <React.Fragment key={index}>
+                          <div className="cart-page__pricing-row cart-page__discount">
+                            <span>
+                              🔵 ${Math.abs(promo.price.monthlyRecurringCharge)}
+                              /mo discount applied
+                            </span>
+                            <span></span>
+                          </div>
+                          {promo.durationOfServicePromotion < 999 && (
+                            <div className="cart-page__discount-note">
+                              Ends {promo.durationOfServicePromotion} months
+                              after activation
+                            </div>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    {selectedInsurancePlan && (
+                      <div className="cart-page__pricing-row">
+                        <span>
+                          {selectedInsurancePlan.name}, $
+                          {insurancePlan.price.monthlyRecurringCharge}/mo
+                        </span>
+                        <span className="cart-page__price">
+                          ${insurancePlan.price.monthlyRecurringCharge}
+                        </span>
+                      </div>
+                    )}
+                    {activationFee && (
+                      <div className="cart-page__pricing-row">
+                        <span>One Time Activation Charge</span>
+                        <span className="cart-page__price">
+                          ${activationFee.price.oneTimeCharge}
+                        </span>
+                      </div>
+                    )}
+                    {waiveFee && waiveFee.price.oneTimeCharge < 0 && (
                       <div className="cart-page__pricing-row cart-page__discount">
                         <span>
-                          🔵 ${Math.abs(promo.price.monthlyRecurringCharge)}/mo
-                          discount applied
+                          🔵 ${Math.abs(waiveFee.price.oneTimeCharge)} discount
+                          applied
                         </span>
                         <span></span>
                       </div>
-                      {promo.durationOfServicePromotion < 999 && (
-                        <div className="cart-page__discount-note">
-                          Ends {promo.durationOfServicePromotion} months after
-                          activation
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-                {selectedInsurancePlan && (
-                  <div className="cart-page__pricing-row">
-                    <span>
-                      {selectedInsurancePlan.name}, $
-                      {insurancePlan.price.monthlyRecurringCharge}/mo
-                    </span>
-                    <span className="cart-page__price">
-                      ${insurancePlan.price.monthlyRecurringCharge}
-                    </span>
+                    )}
                   </div>
-                )}
-                {activationFee && (
-                  <div className="cart-page__pricing-row">
-                    <span>One Time Activation Charge</span>
-                    <span className="cart-page__price">
-                      ${activationFee.price.oneTimeCharge}
-                    </span>
+                  <div className="cart-page__accessories">
+                    <a href="#">Featured Accessories ▼</a>
                   </div>
-                )}
-                {waiveFee && waiveFee.price.oneTimeCharge < 0 && (
-                  <div className="cart-page__pricing-row cart-page__discount">
-                    <span>
-                      🔵 ${Math.abs(waiveFee.price.oneTimeCharge)} discount
-                      applied
-                    </span>
-                    <span></span>
-                  </div>
-                )}
+                </div>
               </div>
-              <div className="cart-page__accessories">
-                <a href="#">Featured Accessories ▼</a>
+
+              <div className="cart-page__add-device">
+                <span>want to add more lines?</span>
+                <button className="cart-page__add-device-btn">
+                  ADD A DEVICE
+                </button>
               </div>
-            </div>
-          </div>
 
-          <div className="cart-page__add-device">
-            <span>want to add more lines?</span>
-            <button className="cart-page__add-device-btn">ADD A DEVICE</button>
-          </div>
+              <div className="cart-page__tax-section">
+                <div className="cart-page__tax-header">
+                  <span className="cart-page__tax-label">
+                    Sales Tax on Equipment ⓘ
+                  </span>
+                  <span className="cart-page__tax-value">
+                    ${oneTimeTax.toFixed(2)} ▼
+                  </span>
+                </div>
+                <div className="cart-page__tax-note">
+                  Taxes are based on the full retail price of your product and
+                  must be paid in one upfront payment. Sales tax calculated
+                  using your zip code: 85221 8592.
+                </div>
+                <a className="cart-page__tax-link" href="#">
+                  View Included Taxes, Fees and Other Charges
+                </a>
+              </div>
 
-          <div className="cart-page__tax-section">
-            <div className="cart-page__tax-header">
-              <span className="cart-page__tax-label">
-                Sales Tax on Equipment ⓘ
-              </span>
-              <span className="cart-page__tax-value">
-                ${oneTimeTax.toFixed(2)} ▼
-              </span>
-            </div>
-            <div className="cart-page__tax-note">
-              Taxes are based on the full retail price of your product and must
-              be paid in one upfront payment. Sales tax calculated using your
-              zip code: 85221 8592.
-            </div>
-            <a className="cart-page__tax-link" href="#">
-              View Included Taxes, Fees and Other Charges
-            </a>
-          </div>
+              <div className="cart-page__total-section">
+                <span className="cart-page__total-label">Total</span>
+                <span className="cart-page__total-value">
+                  ${oneTimeTotal.toFixed(2)}
+                </span>
+              </div>
 
-          <div className="cart-page__total-section">
-            <span className="cart-page__total-label">Total</span>
-            <span className="cart-page__total-value">
-              ${oneTimeTotal.toFixed(2)}
-            </span>
-          </div>
-
-          <div className="cart-page__actions-bottom">
-            <a className="cart-page__monthly-link" href="#">
-              View Monthly Costs
-            </a>
-            <div className="cart-page__bottom-buttons">
-              <button className="cart-page__continue-btn">
-                CONTINUE SHOPPING
-              </button>
-              <button className="cart-page__checkout-btn">CHECKOUT</button>
+              <div className="cart-page__actions-bottom">
+                <a className="cart-page__monthly-link" href="#">
+                  View Monthly Costs
+                </a>
+                <div className="cart-page__bottom-buttons">
+                  <button className="cart-page__continue-btn">
+                    CONTINUE SHOPPING
+                  </button>
+                  <button className="cart-page__checkout-btn">CHECKOUT</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

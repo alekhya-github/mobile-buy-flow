@@ -4,6 +4,8 @@ import PhoneService, { Phone } from "../../services/phoneService";
 import TradeInSection, { TradeInOffer } from "../TradeInSection/TradeInSection";
 import TradeInModal from "../TradeInSection/TradeInModal";
 import "./PhoneDetails.scss";
+// Import the context hook to save selections
+import { useMobileBuyFlow } from "../../context/PhoneSelectionContext";
 
 // Helper function to get full image URL (uses local public folder)
 const getImageUrl = (imagePath: string): string => {
@@ -19,6 +21,10 @@ const getImageUrl = (imagePath: string): string => {
 const PhoneDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  // Get the context functions to save phone selections
+  const { updatePhoneDetails, updateTradeInDetails } = useMobileBuyFlow();
+
   const [phone, setPhone] = useState<Phone | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -107,8 +113,41 @@ const PhoneDetails: React.FC = () => {
 
   const selectedStorageOption = getSelectedStorageOption();
 
-  // Handle Next button click - navigate to customer check
+  // Handle Next button click - Save selections to context and navigate
   const handleNext = () => {
+    if (!phone) return;
+
+    // Get the selected color details (name and hex code)
+    const selectedColorOption = phone.colors.find(
+      (c) => c.name === selectedColor,
+    );
+
+    // Step 1: Save phone details to context (shopping cart)
+    updatePhoneDetails({
+      phoneId: id || null,
+      phoneBrand: phone.brand,
+      phoneModel: phone.model,
+      phoneImage: getSelectedColorImage(),
+      selectedColor: selectedColor,
+      selectedColorHex: selectedColorOption?.hexCode || null,
+      selectedStorage: selectedStorage,
+      fullPrice: selectedStorageOption?.price || phone.pricing.fullPrice,
+      monthlyPrice:
+        selectedStorageOption?.monthlyPrice || phone.pricing.monthlyPrice,
+    });
+
+    // Step 2: Save trade-in details if available
+    if (acceptedTradeInOffer) {
+      updateTradeInDetails({
+        hasTradeIn: true,
+        tradeInDevice: `${acceptedTradeInOffer.tradeinPhoneBrand} ${acceptedTradeInOffer.tradeinModel}`,
+        tradeInValue: acceptedTradeInOffer.tradeinValue || null,
+        tradeInCondition: null,
+      });
+    }
+
+    // Step 3: Navigate to next page
+    // Note: We're still passing state for backward compatibility
     navigate("/mobile/customer-check", {
       state: {
         phoneId: id,

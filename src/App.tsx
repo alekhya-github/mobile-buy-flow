@@ -18,32 +18,37 @@ import IdentityProtection from "./components/IdentityProtection/IdentityProtecti
 import "./App.scss";
 import PlansPage from "./components/PlansPage/PlansPage";
 import CartPage from "./components/CartPage/CartPage";
+// Import the Provider - our shopping cart manager
+import { MobileBuyFlowProvider } from "./context/PhoneSelectionContext";
 
 function App() {
   return (
-    <Router>
-      <div className="app-container">
-        <Header />
-        <MainContent>
-          <Routes>
-            <Route path="/mobile/home" element={<Home />} />
-            <Route path="/mobile/phones" element={<Phones />} />
-            <Route path="/mobile/server-info" element={<ServerInfo />} />
-            <Route path="/mobile/phone/:id" element={<PhoneDetails />} />
-            <Route path="/mobile/customer-check" element={<CustomerCheck />} />
-            <Route path="/mobile/sign-in" element={<SignIn />} />
-            <Route
-              path="/mobile/identity-protection"
-              element={<IdentityProtection />}
-            />
-            <Route path="/plans" element={<PlansPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/" element={<Navigate to="/mobile/home" replace />} />
-          </Routes>
-        </MainContent>
-        <Footer />
-      </div>
-    </Router>
+    // Wrap entire app with Provider - makes shopping cart available everywhere
+    <MobileBuyFlowProvider>
+      <Router>
+        <div className="app-container">
+          <Header />
+          <MainContent>
+            <Routes>
+              <Route path="/mobile/home" element={<Home />} />
+              <Route path="/mobile/phones" element={<Phones />} />
+              <Route path="/mobile/server-info" element={<ServerInfo />} />
+              <Route path="/mobile/phone/:id" element={<PhoneDetails />} />
+              <Route path="/mobile/customer-check" element={<CustomerCheck />} />
+              <Route path="/mobile/sign-in" element={<SignIn />} />
+              <Route
+                path="/mobile/identity-protection"
+                element={<IdentityProtection />}
+              />
+              <Route path="/plans" element={<PlansPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/" element={<Navigate to="/mobile/home" replace />} />
+            </Routes>
+          </MainContent>
+          <Footer />
+        </div>
+      </Router>
+    </MobileBuyFlowProvider>
   );
 }
 
